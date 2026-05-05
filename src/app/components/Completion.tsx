@@ -5,12 +5,20 @@ import confetti from 'canvas-confetti';
 
 interface CompletionProps {
   perspective: string;
+  aiReflection?: string;
+  loadingAi?: boolean;
+  aiError?: string;
   onContinue: () => void;
 }
 
-export default function Completion({ perspective, onContinue }: CompletionProps) {
+export default function Completion({
+  perspective,
+  aiReflection,
+  loadingAi,
+  aiError,
+  onContinue,
+}: CompletionProps) {
   useEffect(() => {
-    // Gentle confetti celebration
     const duration = 2000;
     const end = Date.now() + duration;
 
@@ -77,6 +85,25 @@ export default function Completion({ perspective, onContinue }: CompletionProps)
               <h2 className="text-xl text-[#3d3244]">Your Balanced Perspective</h2>
               <div className="bg-gradient-to-br from-[#C3D162]/30 to-[#AED7D3]/30 rounded-2xl p-6 border border-[#F1C6D9]/20">
                 <p className="text-[#3d3244] leading-relaxed italic">"{perspective}"</p>
+              </div>
+            </div>
+
+            <div className="space-y-3">
+              <h2 className="text-xl text-[#3d3244]">AI Balanced Reflection</h2>
+              <div className="bg-[#ffffff] rounded-2xl p-6 border border-[#AED7D3]/30">
+                {loadingAi && (
+                  <p className="text-[#B5A4AC] text-sm">
+                    Perspekta is creating a realistic balanced reflection...
+                  </p>
+                )}
+
+                {!loadingAi && aiReflection && (
+                  <p className="text-[#3d3244] leading-relaxed">{aiReflection}</p>
+                )}
+
+                {!loadingAi && aiError && (
+                  <p className="text-[#B5A4AC] text-sm">{aiError}</p>
+                )}
               </div>
             </div>
 

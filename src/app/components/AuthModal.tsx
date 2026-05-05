@@ -46,6 +46,9 @@ export default function AuthModal({ isOpen, onClose, onSignIn, onSignUp }: AuthM
           return;
         }
         await onSignUp(email, password, name);
+        setError('Account created! Please check your email and confirm your account before signing in.');
+        setPassword('');
+        return;
       }
       // Close modal on success
       onClose();

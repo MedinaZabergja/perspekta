@@ -15,6 +15,10 @@ export default function ReflectPage() {
   const navigate = useNavigate();
   const [currentStep, setCurrentStep] = useState<ReflectionStep>('thought');
 
+  const [aiReflection, setAiReflection] = useState('');
+  const [loadingAi, setLoadingAi] = useState(false);
+  const [aiError, setAiError] = useState('');
+
   useEffect(() => {
     if (state.reflectionModeUntil && isInReflectionMode(state.reflectionModeUntil)) {
       navigate('/', { replace: true });
@@ -58,7 +62,10 @@ export default function ReflectPage() {
     setCurrentStep('perspective');
   };
 
-  const handlePerspectiveComplete = (balancedPerspective: string) => {
+  const handlePerspectiveComplete = async (balancedPerspective: string) => {
+    const thought = state.currentEntry?.thought || '';
+    const evidence = state.currentEntry?.evidence || [];
+
     setState((prev) => {
       if (!prev) return prev;
       return {
@@ -66,7 +73,35 @@ export default function ReflectPage() {
         currentEntry: { ...prev.currentEntry, balancedPerspective },
       };
     });
+
     setCurrentStep('completion');
+    setLoadingAi(true);
+    setAiError('');
+    setAiReflection('');
+
+    try {
+      const response = await fetch('/api/ai-reflection', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          thought,
+          evidence,
+          balancedPerspective,
+        }),
+      });
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        throw new Error(data.error || 'AI failed');
+      }
+
+      setAiReflection(data.aiReflection);
+    } catch (error) {
+      setAiError('AI reflection could not be generated, but your balanced perspective is still saved.');
+    } finally {
+      setLoadingAi(false);
+    }
   };
 
   const handleReflectionComplete = () => {
@@ -148,6 +183,9 @@ export default function ReflectPage() {
       return (
         <Completion
           perspective={state.currentEntry?.balancedPerspective || ''}
+          aiReflection={aiReflection}
+          loadingAi={loadingAi}
+          aiError={aiError}
           onContinue={handleReflectionComplete}
         />
       );

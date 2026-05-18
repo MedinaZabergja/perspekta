@@ -3,13 +3,14 @@
   "private": true,
   "version": "0.0.1",
   "type": "module",
-"scripts": {
-  "build": "vite build",
-  "dev": "concurrently \"vite\" \"tsx server/ai-reflection.ts\""
+  "scripts": {
+    "build": "vite build",
+    "dev": "concurrently \"vite\" \"tsx server/ai-reflection.ts\""
   },
   "dependencies": {
     "@emotion/react": "11.14.0",
     "@emotion/styled": "11.14.1",
+    "@google/generative-ai": "^0.24.1",
     "@mui/icons-material": "7.3.5",
     "@mui/material": "7.3.5",
     "@popperjs/core": "2.11.8",
@@ -44,6 +45,7 @@
     "class-variance-authority": "0.7.1",
     "clsx": "2.1.1",
     "cmdk": "1.1.1",
+    "cors": "^2.8.6",
     "date-fns": "3.6.0",
     "dotenv": "^17.4.2",
     "embla-carousel-react": "8.6.0",
@@ -70,6 +72,7 @@
   "devDependencies": {
     "@tailwindcss/vite": "4.1.12",
     "@types/canvas-confetti": "^1.9.0",
+    "@types/cors": "^2.8.19",
     "@types/express": "^5.0.6",
     "@types/node": "^25.6.0",
     "@types/react": "^19.2.14",

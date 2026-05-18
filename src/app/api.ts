@@ -1,4 +1,4 @@
-import { projectId, publicAnonKey } from '/utils/supabase/info';
+import { projectId, publicAnonKey } from '../../utils/supabase/info';
 import { AppState, ThoughtEntry } from './types';
 import {
   getAuthenticatedUserId,
